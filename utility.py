@@ -30,8 +30,7 @@ def confirm_dialogue(message, default="y"):
 def get_file_list(ext=None, dir=".\\"):
 
     file_list = [file for file in os.listdir(dir)
-                 if os.path.isfile(dir + file)
-                 and not file.endswith(".py")]
+                 if os.path.isfile(dir + file)]
     
     if ext:
         file_list = [file for file in file_list

@@ -2,6 +2,7 @@ from utility import *
 from encryption import *
 import signal
 import sys
+import random
 
 def signal_handler(sig, frame):
     print('Exit signal received, closing...')
@@ -31,6 +32,7 @@ while not exit_flag:
     1 - Generate a new keypair
     2 - Decrypt a .tomb archive from this directory
     3 - Encrypt files from this directory
+    4 - Check what files TOMB can see
 
     0 - Quit applicatoin
 
@@ -58,7 +60,8 @@ while not exit_flag:
         # 3 - Encrypt files
         elif option == "3":
             tidy_foreign_keys()
-            files_to_encrypt = [f for f in get_file_list() if not f.endswith(".tomb")]
+            files_to_encrypt = [f for f in get_file_list() if not f.endswith(".tomb") 
+                                and not f.endswith(".py") and f != os.path.basename(sys.executable)]
 
             if len(files_to_encrypt) > MAX_ENCRYPT_FILE_QTY:
 
@@ -87,8 +90,26 @@ while not exit_flag:
 
             encrypt_files(files_to_encrypt, foreign_key)
 
+        # 4 - ask TOMB what files it can see
+        elif option == "4":
+            files = get_file_list()
+
+            print("TOMB can see files listed below:\n")
+
+            for file in files:
+                print(file, end="")
+                if file.endswith(".tomb") or file.endswith(".py"):
+                    print(" - IGNORED")
+                else:
+                    print()
+
+            print()
+            wait_for_enter()
+
         elif option == "0":
             exit_flag = True
+            if random.randint(1,100) == 100:
+                print("The Nile flows...")
         
         else:
             input_flag = False

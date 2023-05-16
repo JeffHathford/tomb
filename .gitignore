@@ -3,3 +3,6 @@ test.py
 \venv
 \__pycache__
 \keys
+\build
+\dist
+main.spec
