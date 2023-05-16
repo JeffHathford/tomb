@@ -65,7 +65,7 @@ while not exit_flag:
                 print(f"""
                 There are more than {MAX_ENCRYPT_FILE_QTY} encryptable files
                 in current folder. Consider archiving them with another application
-                such as 7zip.
+                such as 7zip and then using TOMB.
                 """)
 
                 wait_for_enter()
