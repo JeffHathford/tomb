@@ -13,7 +13,7 @@ print("Running preconfig...")
 
 #check for keys, create new if not found
 if not os.path.exists(".\keys"):
-    if confirm_dialogue("'keys' folder was not found. Do you want to create a new one? Y/n"):
+    if confirm_dialogue("'keys' folder was not found. Do you want to create a new one? Y/n\n"):
         os.mkdir("keys")
         os.mkdir("keys\\foreign")
         write_keys_to_file(generate_keypair(), ".\\keys\\")
@@ -52,10 +52,12 @@ while not exit_flag:
             if len(archives_to_decrypt) != 0:
                 decrypt_files(archives_to_decrypt)
             else:
-                print("No archives found in current folder.")
+                print("No .tomb archives found in current folder.")
+                wait_for_enter()
 
         # 3 - Encrypt files
         elif option == "3":
+            tidy_foreign_keys()
             files_to_encrypt = [f for f in get_file_list() if not f.endswith(".tomb")]
 
             if len(files_to_encrypt) > MAX_ENCRYPT_FILE_QTY:
@@ -66,17 +68,19 @@ while not exit_flag:
                 such as 7zip.
                 """)
 
+                wait_for_enter()
                 continue
 
             if len(files_to_encrypt) == 0:
                 print("No files to encrypt.")
+                wait_for_enter()
                 continue
 
             print("Encrypting files listed below:\n")
             for file in files_to_encrypt:
                 print(file)
             
-            if not confirm_dialogue("\nProceed? Y/n"):
+            if not confirm_dialogue("\nProceed? Y/n\n"):
                 continue
 
             foreign_key = load_foreign_key(user_select_foreign_key())

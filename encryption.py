@@ -80,7 +80,7 @@ def decrypt_files(file_list, private_key=None, dst_dir=".\\decrypted\\"):
     
     for filename in file_list:
         # subtract .tomb from filename
-        subdir_name = f"filename[:-5]\\"
+        subdir_name = f"{filename[:-5]}\\"
         try:
             with open(filename, "rb") as archive:
                 data = archive.read()
@@ -93,7 +93,7 @@ def decrypt_files(file_list, private_key=None, dst_dir=".\\decrypted\\"):
                 enc_file_data = enc_data.split(sep=b';')[:-1]
 
                 if not os.path.exists(dst_dir + subdir_name):
-                    os.mkdir(dst_dir + subdir_name)
+                    os.makedirs(dst_dir + subdir_name, exist_ok=True)
 
                 for idx, filename in enumerate(filenames):
                     with open(dst_dir + subdir_name + filename, "wb") as file:

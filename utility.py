@@ -1,5 +1,6 @@
 import os
 import cryptography
+import shutil
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import hashes
@@ -14,6 +15,9 @@ def clear():
         os.system('cls')
     else:
         os.system('clear')
+
+def wait_for_enter(message="Press Enter to continue..."):
+    input(message)
 
 def confirm_dialogue(message, default="y"):
     answer = input(message)
@@ -103,6 +107,9 @@ def load_public_key (filename = "public_shared.pem"):
 
 def load_foreign_key (filename = "foreign_public.pem"):
 
+    if filename == -1:
+        return -1
+
     directory = ".\\keys\\foreign\\"
 
     print(f"Loading foreign key from \'{directory + filename}\'")
@@ -122,6 +129,12 @@ def load_foreign_key (filename = "foreign_public.pem"):
 def user_select_foreign_key ():
     foreign_keys = get_file_list(".pem", ".\\keys\\foreign\\")
 
+    if len(foreign_keys) == 0:
+        print("""
+        No foreign keys detected. Please refer to README.txt on how to solve this issue.
+        """)
+        return -1
+
     print("List of stored foreign keys:\n")
     for key in foreign_keys:
         print(key[8:-4])
@@ -136,3 +149,9 @@ def user_select_foreign_key ():
     
     else:
         return key_name
+    
+def tidy_foreign_keys():
+    keys_in_pwd = [file for file in get_file_list(".pem") if file[:8] == "foreign_"]
+    if len(keys_in_pwd) > 0:
+        for file in keys_in_pwd:
+            shutil.move(os.path.join(".", file), ".\\keys\\foreign\\")
